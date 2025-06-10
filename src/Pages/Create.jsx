@@ -88,17 +88,19 @@ const Create = () => {
 
     console.log({ prompt, category });
 
-    axios.post("http://localhost:5000/create-image", {
-      email: user?.email,
-      prompt,
-      category,
-      userName: user?.displayName || "Anonymus",
-      userImg:
-        user?.photoURL ||
-        "https://img.icons8.com/?size=48&id=z-JBA_KtSkxG&format=png",
-    }).then(res=>{
-      console.log(res.data)
-    });
+    axios
+      .post("http://localhost:5000/api/v1/image/create", {
+        email: user?.email,
+        prompt,
+        category,
+        userName: user?.displayName || "Anonymus",
+        userImg:
+          user?.photoURL ||
+          "https://img.icons8.com/?size=48&id=z-JBA_KtSkxG&format=png",
+      })
+      .then((res) => {
+        console.log(res.data);
+      });
   };
   return (
     <div>
