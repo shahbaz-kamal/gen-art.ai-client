@@ -1,0 +1,11 @@
+@import "tailwindcss";
+@plugin "daisyui";
+@plugin "daisyui/theme" {
+  name: "light";
+  default: true;
+  --color-primary: #149b9b;
+}
+
+a.active {
+  @apply bg-[#149b9b] text-white;
+}
