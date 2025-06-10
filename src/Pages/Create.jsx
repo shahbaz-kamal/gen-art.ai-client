@@ -2,6 +2,7 @@ import { useContext } from "react";
 import PageTitle from "../components/shared/PageTitle";
 import { AuthContext } from "../provider/AuthProvider";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 const Create = () => {
   const { user, login } = useContext(AuthContext);
@@ -73,7 +74,7 @@ const Create = () => {
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!checkUser()) return;
@@ -86,32 +87,18 @@ const Create = () => {
     //validation End
 
     console.log({ prompt, category });
-    const finalPrompt = `Generate an image in this category: ${category}. Prompt : ${prompt}`;
-    console.log(finalPrompt);
 
-    const myForm = new FormData();
-    myForm.append("prompt", finalPrompt);
-
-    fetch("https://clipdrop-api.co/text-to-image/v1", {
-      method: "POST",
-      headers: {
-        "x-api-key": import.meta.env.VITE_CD_API,
-      },
-      body: myForm,
-    })
-      .then((response) => response.arrayBuffer())
-      .then((buffer) => {
-        // buffer here is a binary representation of the returned image
-        console.log(buffer);
-        const blob = new Blob([buffer], { type: "image/png" });
-        const url = URL.createObjectURL(blob);
-        console.log(url);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    return;
+    axios.post("http://localhost:5000/create-image", {
+      email: user?.email,
+      prompt,
+      category,
+      userName: user?.displayName || "Anonymus",
+      userImg:
+        user?.photoURL ||
+        "https://img.icons8.com/?size=48&id=z-JBA_KtSkxG&format=png",
+    }).then(res=>{
+      console.log(res.data)
+    });
   };
   return (
     <div>
